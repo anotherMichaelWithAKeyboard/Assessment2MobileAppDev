@@ -21,7 +21,7 @@
         <EditText
             android:id="@+id/inputTextLoginUsername"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:ems="10"
             android:hint="@string/login_username_hint"
             android:inputType="text" />
@@ -29,7 +29,7 @@
         <EditText
             android:id="@+id/inputTextLoginPassword"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:ems="10"
             android:hint="@string/login_password_hint"
             android:inputType="textPassword" />
@@ -37,7 +37,7 @@
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:text="@string/login_button_text" />
     </LinearLayout>
 

@@ -15,12 +15,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.fragment_view)
+        setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .setReorderingAllowed(true)
-            .add(R.id.fragment_container_view, FragmentViewController::class.java,null)
-            .commit()
 
         /*
         textView = findViewById(R.id.textView)
