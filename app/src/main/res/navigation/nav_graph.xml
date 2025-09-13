@@ -23,5 +23,8 @@
         tools:layout="@layout/fragment_dashboard_view">
 
     </fragment>
+    <argument
+        android:name="User"
+        app:argType="com.example.assessment2mobileappdev.data.User" />
 
 </navigation>

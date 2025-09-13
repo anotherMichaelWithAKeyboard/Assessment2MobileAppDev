@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.assessment2mobileappdev.R
 
 class LoginFragment: Fragment() {
@@ -26,10 +26,39 @@ class LoginFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val username: EditText = view.findViewById<EditText>(R.id.inputTextLoginUsername)
+        val password: EditText = view.findViewById<EditText>(R.id.inputTextLoginPassword)
+        val inputUsername = username.text?.toString()
+        val inputPassword = password.text?.toString()
+        var loginValid: Boolean = true
+        val incorrectLoginTextView: TextView = view.findViewById(R.id.incorrectLoginText)
         val  loginButton: Button = view.findViewById<Button>(R.id.loginButton)
         loginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_fragment_login_screen_to_fragment_dashboard_view)
+            fun loginCheck(inputUsername:String?, inputPassword:String?) {
+                when (inputUsername == "Mikaere" && inputPassword == "1") {
+                    true -> {
+                        findNavController().navigate(R.id.action_fragment_login_screen_to_fragment_dashboard_view)
+                    }
+                    false -> {
+                        incorrectLoginTextView.text="incorrect_login"
+                    }
+                }
+            }
+            loginCheck(inputUsername,inputPassword)
+            /*
+            fun loginAccount(loginValid:Boolean = false) {
+                when(loginValid) {
+                    true -> {
+                        findNavController().navigate(R.id.action_fragment_login_screen_to_fragment_dashboard_view)
+                    }
+                    false ->
+                }
+            }
+             loginAccount()
+             */
+
+
+
         }
     }
 

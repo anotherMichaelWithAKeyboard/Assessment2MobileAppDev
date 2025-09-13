@@ -39,6 +39,15 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/login_button_text" />
+
+        <TextView
+            android:id="@+id/incorrectLoginText"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:textColor="@color/warning_red"
+            app:autoSizeTextType="uniform" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
