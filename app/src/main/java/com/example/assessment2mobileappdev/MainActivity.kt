@@ -1,17 +1,9 @@
 package com.example.assessment2mobileappdev
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import com.example.assessment2mobileappdev.views.MainViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.time.delay
+import com.example.assessment2mobileappdev.views.FragmentViewController
 
 class MainActivity : AppCompatActivity() {
     /*
@@ -23,7 +15,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.fragment_view)
+
+        supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .add(R.id.fragment_container_view, FragmentViewController::class.java,null)
+            .commit()
 
         /*
         textView = findViewById(R.id.textView)
