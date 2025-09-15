@@ -13,10 +13,6 @@ import com.example.assessment2mobileappdev.R
 
 class LoginFragment: Fragment() {
 
-    override fun onCreate(savedInstanceState:Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,39 +22,23 @@ class LoginFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // iniitate values for input
         val username: EditText = view.findViewById<EditText>(R.id.inputTextLoginUsername)
         val password: EditText = view.findViewById<EditText>(R.id.inputTextLoginPassword)
-        val inputUsername = username.text?.toString()
-        val inputPassword = password.text?.toString()
-        var loginValid: Boolean = true
         val incorrectLoginTextView: TextView = view.findViewById(R.id.incorrectLoginText)
+
         val  loginButton: Button = view.findViewById<Button>(R.id.loginButton)
+
+        val expectedUsername = getString(R.string.expected_username)
+        val expectedPassword = getString(R.string.expected_password)
         loginButton.setOnClickListener {
-            fun loginCheck(inputUsername:String?, inputPassword:String?) {
-                when (inputUsername == "Mikaere" && inputPassword == "1") {
-                    true -> {
-                        findNavController().navigate(R.id.action_fragment_login_screen_to_fragment_dashboard_view)
-                    }
-                    false -> {
-                        incorrectLoginTextView.text="incorrect_login"
-                    }
-                }
+            val enteredUsername = username.text?.toString()
+            val enteredPassword = password.text?.toString()
+            if (enteredUsername == expectedUsername && enteredPassword == expectedPassword) {
+                findNavController().navigate(R.id.action_fragment_login_screen_to_fragment_dashboard_view)
+            } else {
+                incorrectLoginTextView.text = getString(R.string.incorrect_login)
             }
-            loginCheck(inputUsername,inputPassword)
-            /*
-            fun loginAccount(loginValid:Boolean = false) {
-                when(loginValid) {
-                    true -> {
-                        findNavController().navigate(R.id.action_fragment_login_screen_to_fragment_dashboard_view)
-                    }
-                    false ->
-                }
-            }
-             loginAccount()
-             */
-
-
-
         }
     }
 
