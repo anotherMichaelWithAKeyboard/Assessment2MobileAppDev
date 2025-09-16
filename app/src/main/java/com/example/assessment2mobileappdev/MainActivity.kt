@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.assessment2mobileappdev.views.FragmentViewController
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class MainActivity : AppCompatActivity() {
     /*

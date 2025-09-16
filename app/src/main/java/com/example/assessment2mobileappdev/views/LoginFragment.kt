@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.assessment2mobileappdev.R
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class LoginFragment: Fragment() {
 
