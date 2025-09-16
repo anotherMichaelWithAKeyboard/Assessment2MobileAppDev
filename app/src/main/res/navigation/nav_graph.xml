@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/fragment_login_screen"
-        android:name="com.example.assessment2mobileappdev.views.LoginFragment"
+        android:name="com.example.assessment2mobileappdev.ui.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/fragment_login_screen">
+        tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_fragment_login_screen_to_fragment_dashboard_view"
@@ -18,13 +18,28 @@
 
     <fragment
         android:id="@+id/fragment_dashboard_view"
-        android:name="com.example.assessment2mobileappdev.views.DashboardFragment"
+        android:name="com.example.assessment2mobileappdev.ui.dashboard.DashboardFragment"
         android:label="login_fragment"
-        tools:layout="@layout/fragment_dashboard_view">
+        tools:layout="@layout/fragment_dashboard">
 
     </fragment>
-    <argument
-        android:name="User"
-        app:argType="com.example.assessment2mobileappdev.data.User" />
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.assessment2mobileappdev.ui.dashboard.DashboardFragment"
+        android:label="Dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_detailsFragment"
+            app:destination="@id/fragment_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_details"
+        android:name="com.example.assessment2mobileappdev.ui.details.DetailsFragment"
+        android:label="Details">
+        <argument
+            android:name="entity"
+            app:argType="com.example.assessment2mobileappdev.data.model.Entity" />
+    </fragment>
 
 </navigation>
