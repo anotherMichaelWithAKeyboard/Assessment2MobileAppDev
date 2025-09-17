@@ -29,12 +29,16 @@ How it works
 Endpoint
 -	GET /dashboard/{keypass}
 Response shape
--		{
--		  "entities": [
--		    { "itemName": "Little Black Dress", "designer": "Coco Chanel", "yearIntroduced": 1926, "category": "Dresses", "material": "Various", "description": "..." }
--		  ],
--		  "entityTotal": 7
--		}
+{"entities": [
+{ "itemName": "Little Black Dress",
+"designer": "Coco Chanel",
+"yearIntroduced": 1926,
+"category":
+"Dresses",
+"material": "Various",
+"description": "..." }],
+     "entityTotal": 7
+   }
 
 Models
 Entity Parcelable
