@@ -1,7 +1,6 @@
 package com.example.assessment2mobileappdev.data.remote
 
 import com.example.assessment2mobileappdev.data.model.ApiRequest
-import com.example.assessment2mobileappdev.data.model.ApiResponse
 import com.example.assessment2mobileappdev.data.model.LoginResponse
 import com.example.assessment2mobileappdev.data.model.DashboardResponse
 import retrofit2.Response
@@ -23,16 +22,16 @@ interface ApiService {
 
 
     @GET("objects/{id}")
-    suspend fun getObjectsById(@Path("id") id: Int): ApiResponse
+    suspend fun getObjectsById(@Path("id") id: Int): DashboardResponse
 
     @GET("objects/search")
     suspend fun searchObjects(
         @Query("name") name: String,
         @Query("description") description: String
-    ): List<ApiResponse>
+    ): List<DashboardResponse>
 
     @POST("objects")
-    suspend fun addObject(@Body objectData: ApiRequest): Response<ApiResponse>
+    suspend fun addObject(@Body objectData: ApiRequest): Response<DashboardResponse>
 
 
 

@@ -20,3 +20,12 @@ data class Entity(
     @Json(name = "material") val material: String?,
     @Json(name = "description") val description: String?
 ) : Parcelable
+
+fun Entity.toDomain() = Entity(
+    itemName = itemName?.takeIf { it.isNotBlank() } ?: "(Unnamed)",
+    designer = designer.orEmpty(),
+    yearIntroduced = yearIntroduced ?: 0,
+    category = category.orEmpty(),
+    material = material.orEmpty(),
+    description = description.orEmpty()
+)

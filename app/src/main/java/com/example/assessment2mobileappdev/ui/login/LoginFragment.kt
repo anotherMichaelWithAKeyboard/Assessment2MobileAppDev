@@ -57,13 +57,10 @@ class LoginFragment : Fragment() {
             val enteredPassword = password.text?.toString()?.trim()
 
             if (enteredUsername == expectedUsername && enteredPassword == expectedPassword) {
-                Log.d(TAG, "Local login OK. Loading dashboard with keypass='fashion'...")
-                // Behave like the "Load Dashboard" button:
-                viewModel.onLoginClicked() // if your VM uses hardcoded "fashion"
-                // OR call explicitly:
+                Log.d(TAG, "Local login OK. Loading dashboard...")
+                viewModel.onLoginClicked()
                 // viewModel.loadDashboard("fashion")
 
-                // Navigate to dashboard
                 findNavController().navigate(
                     R.id.action_fragment_login_screen_to_fragment_dashboard_view
                 )

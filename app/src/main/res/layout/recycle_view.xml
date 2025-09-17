@@ -18,7 +18,7 @@
         android:id="@+id/textDesigner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="4dp"
         android:text="Designer"
-        android:textSize="14sp"
-        android:paddingTop="4dp" />
+        android:textSize="14sp" />
 </LinearLayout>

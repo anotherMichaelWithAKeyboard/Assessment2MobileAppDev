@@ -23,8 +23,8 @@ class DashboardAdapter(
         private val designer: TextView = itemView.findViewById(R.id.designerText)
 
         fun bind(entity: Entity) {
-            name.text = entity.itemName
-            designer.text = entity.designer
+            name.text = entity.itemName?.ifBlank { "(Unnamed)" }
+            designer.text = entity.designer?.ifBlank { "(Unknown)" }
             itemView.setOnClickListener { onItemClick(entity) }
         }
     }
