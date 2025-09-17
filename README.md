@@ -26,6 +26,7 @@ How it works
    Collects flows and updates RecyclerView and on item tap navigate to details passing Entity as Parcelable
 
 -----------------------------API contract----------------------
+
 Endpoint
 -	GET /dashboard/{keypass}
 Response shape
