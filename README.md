@@ -53,21 +53,29 @@ EntitiesResponse
 -	entities List<Entity>
 
 -------Key files-------
+
 Data model
+
    Entity-kt
    EntitiesResponse-kt
 Data remote
+
    ApiService-kt
 Data repo
+
    RestfulApiRepository-kt
 di (Dependency Injection)
+
    NetworkModule-kt
 ui dashboard
+
    DashboardFragment-kt
    DashboardAdapter-kt
 ui
+
    RestfulApiViewModel-kt
 
 Usage
+
    App loads fashion by default
    Change dataset with viewModel-refresh("<your-keypass>") or update the default in RestfulApiViewModel
