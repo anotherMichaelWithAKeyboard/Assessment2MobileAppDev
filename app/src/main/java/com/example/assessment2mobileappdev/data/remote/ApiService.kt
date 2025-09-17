@@ -2,13 +2,12 @@ package com.example.assessment2mobileappdev.data.remote
 
 import com.example.assessment2mobileappdev.data.model.ApiRequest
 import com.example.assessment2mobileappdev.data.model.LoginResponse
-import com.example.assessment2mobileappdev.data.model.DashboardResponse
+import com.example.assessment2mobileappdev.data.model.EntitiesResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
 
@@ -18,9 +17,10 @@ interface ApiService {
         // gets all objects from the dashboard.
 
     @GET("dashboard/{keypass}")
-    suspend fun getDashboard(@Path("keypass") keypass: String): Response<DashboardResponse>
+    suspend fun getDashboard(@Path("keypass") keypass: String): EntitiesResponse
+}
 
-
+    /*
     @GET("objects/{id}")
     suspend fun getObjectsById(@Path("id") id: Int): DashboardResponse
 
@@ -35,4 +35,7 @@ interface ApiService {
 
 
 
+
+
 }
+*/

@@ -1,25 +1,37 @@
-// RestfulApiViewModel.kt
+// ui/RestfulApiViewModel.kt
 package com.example.assessment2mobileappdev.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.assessment2mobileappdev.data.model.Entity
+import com.example.assessment2mobileappdev.data.model.normalized
 import com.example.assessment2mobileappdev.data.repo.RestfulApiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 private const val TAG = "DashboardVM"
+
+sealed interface DashboardUiState {
+    data object Idle : DashboardUiState
+    data object Loading : DashboardUiState
+    data class Success(val data: List<Entity>) : DashboardUiState
+    data class Offline(val message: String) : DashboardUiState
+    data class Error(val message: String) : DashboardUiState
+}
 
 @HiltViewModel
 class RestfulApiViewModel @Inject constructor(
     private val repository: RestfulApiRepository
 ) : ViewModel() {
 
-    // hardcode keypass per your request
     private val _keypass = MutableStateFlow("fashion")
     val keypass: StateFlow<String> = _keypass
 
@@ -29,33 +41,41 @@ class RestfulApiViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    /** Call this when the login button is clicked */
+    private val _uiState = MutableStateFlow<DashboardUiState>(DashboardUiState.Idle)
+    val uiState: StateFlow<DashboardUiState> = _uiState
+
     fun onLoginClicked() {
-        val kp = _keypass.value
-        Log.d(TAG, "Login clicked. Using keypass='$kp'. Fetching dashboard…")
-        loadDashboard(kp)
+        refresh(_keypass.value)
     }
 
-    private fun loadDashboard(kp: String) {
-        viewModelScope.launch {
+    fun refresh(kp: String = _keypass.value, preDelayMs: Long = 0L) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.value = DashboardUiState.Loading
             try {
-                Log.d(TAG, "GET /dashboard/$kp -> starting request")
-                val resp = repository.getDashboard(kp)
-                Log.d(TAG, "GET /dashboard/$kp -> HTTP ${resp.code()}")
+                if (preDelayMs > 0) kotlinx.coroutines.delay(preDelayMs)
 
-                if (resp.isSuccessful) {
-                    val body = resp.body()
-                    Log.d(TAG, "GET /dashboard/$kp -> entityTotal=${body?.entityTotal} items=${body?.entities?.size}")
-                    _entities.value = body?.entities.orEmpty()
-                } else {
-                    val msg = "Dashboard failed: ${resp.code()} ${resp.message()}"
-                    Log.e(TAG, msg)
-                    _error.value = msg
-                }
-            } catch (e: Exception) {
-                val msg = "Dashboard error: ${e.message}"
+                // ensure network on IO (we're already on IO, but be explicit if you reuse elsewhere)
+                val list = withContext(Dispatchers.IO) { repository.getEntities(kp) }
+                    .map { it.normalized() }
+
+                _entities.value = list
+                _error.value = null
+                _uiState.value = DashboardUiState.Success(list)
+            } catch (e: UnknownHostException) {
+                val msg = "Offline / can’t resolve host"
                 Log.e(TAG, msg, e)
                 _error.value = msg
+                _uiState.value = DashboardUiState.Offline(msg)
+            } catch (e: HttpException) {
+                val msg = "HTTP ${e.code()} ${e.message()}"
+                Log.e(TAG, msg, e)
+                _error.value = msg
+                _uiState.value = DashboardUiState.Error(msg)
+            } catch (e: Exception) {
+                val msg = e.message ?: "Unexpected error"
+                Log.e(TAG, msg, e)
+                _error.value = msg
+                _uiState.value = DashboardUiState.Error(msg)
             }
         }
     }

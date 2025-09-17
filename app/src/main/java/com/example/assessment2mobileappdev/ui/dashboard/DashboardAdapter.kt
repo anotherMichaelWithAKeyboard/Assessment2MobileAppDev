@@ -4,18 +4,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.assessment2mobileappdev.R
 import com.example.assessment2mobileappdev.data.model.Entity
 
 class DashboardAdapter(
-    private var items: List<Entity>,
     private val onItemClick: (Entity) -> Unit
-) : RecyclerView.Adapter<DashboardAdapter.ViewHolder>() {
+) : ListAdapter<Entity, DashboardAdapter.ViewHolder>(DIFF) {
 
-    fun updateData(newItems: List<Entity>) {
-        items = newItems
-        notifyDataSetChanged()
+    companion object {
+        private val DIFF = object : DiffUtil.ItemCallback<Entity>() {
+            override fun areItemsTheSame(oldItem: Entity, newItem: Entity): Boolean {
+                // If the API doesn’t give IDs, use a stable combination
+                return oldItem.itemName == newItem.itemName &&
+                        oldItem.designer == newItem.designer &&
+                        oldItem.yearIntroduced == newItem.yearIntroduced
+            }
+
+            override fun areContentsTheSame(oldItem: Entity, newItem: Entity): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,19 +34,19 @@ class DashboardAdapter(
         private val designer: TextView = itemView.findViewById(R.id.designerText)
 
         fun bind(entity: Entity) {
-            name.text = entity.itemName?.ifBlank { "(Unnamed)" }
-            designer.text = entity.designer?.ifBlank { "(Unknown)" }
+            name.text = entity.itemName?.ifBlank { "(Unnamed)" } ?: "(Unnamed)"
+            designer.text = entity.designer?.ifBlank { "(Unknown)" } ?: "(Unknown)"
             itemView.setOnClickListener { onItemClick(entity) }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.dashboard_item, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.dashboard_item, parent, false)
+        return ViewHolder(v)
+    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(items[position])
-
-    override fun getItemCount(): Int = items.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 }
