@@ -53,20 +53,20 @@ EntitiesResponse
 
 -------Key files-------
 Data model
--	Entity-kt
--	EntitiesResponse-kt
+   Entity-kt
+   EntitiesResponse-kt
 Data remote
--	ApiService-kt
+   ApiService-kt
 Data repo
--	RestfulApiRepository-kt
+   RestfulApiRepository-kt
 di (Dependency Injection)
--	NetworkModule-kt
+   NetworkModule-kt
 ui dashboard
--	DashboardFragment-kt
--	DashboardAdapter-kt
+   DashboardFragment-kt
+   DashboardAdapter-kt
 ui
--   RestfulApiViewModel-kt
+   RestfulApiViewModel-kt
 
 Usage
--	App loads fashion by default
--	Change dataset with viewModel-refresh("<your-keypass>") or update the default in RestfulApiViewModel
+   App loads fashion by default
+   Change dataset with viewModel-refresh("<your-keypass>") or update the default in RestfulApiViewModel
