@@ -7,23 +7,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.assessment2mobileappdev.R
+import com.example.assessment2mobileappdev.ui.DashboardUiState
 import com.example.assessment2mobileappdev.ui.RestfulApiViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
-    // Share the same VM instance created in LoginFragment
     private val viewModel: RestfulApiViewModel by activityViewModels()
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: DashboardAdapter // assuming it takes List<Entity> + onClick
+    private lateinit var adapter: DashboardAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,28 +36,41 @@ class DashboardFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.dashboardRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = DashboardAdapter(emptyList()) { entity ->
-            // TODO: navigate to details if needed
-            // val action = DashboardFragmentDirections.actionDashboardFragmentToDetailsFragment(entity)
-            // findNavController().navigate(action)
+        adapter = DashboardAdapter { entity ->
+            // TODO: navigate to a details screen if needed
+            // findNavController().navigate(...)
         }
         recyclerView.adapter = adapter
 
-        // Observe data emitted by the shared ViewModel
+        // Collect on Main with lifecycle awareness
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.entities.collectLatest { list ->
-                adapter.updateData(list)              // if using a simple Adapter
-                // adapter.submitList(list)           // if you switch to ListAdapter + DiffUtil
-            }
-        }
-
-        // Optional: observe and surface errors
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.error.collectLatest { msg ->
-                if (!msg.isNullOrBlank()) {
-                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.uiState.collect { state ->
+                        when (state) {
+                            DashboardUiState.Idle -> Unit
+                            DashboardUiState.Loading -> Unit // no loading UI
+                            is DashboardUiState.Success -> {
+                                adapter.submitList(state.data)
+                            }
+                            is DashboardUiState.Offline -> {
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                            }
+                            is DashboardUiState.Error -> {
+                                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.error.collect { msg ->
+                        if (!msg.isNullOrBlank()) {
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
+         // viewModel.refresh(preDelayMs = 0L)
     }
 }
