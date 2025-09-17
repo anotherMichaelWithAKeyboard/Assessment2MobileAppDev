@@ -1,10 +1,10 @@
 Assessment2MobileAppDev — Fashion Dashboard
 
-Overview:
+-------------------Overview:-----------------
 
 Android app using MVVM that fetches fashion entities from a REST API and shows them in a RecyclerView, Tap an item to open a details screen with full info
 
-Requirements:
+---------------Requirements:----------------
 
 Android Studio current
 
@@ -14,7 +14,7 @@ Kotlin and Gradle
 
 Manifest permissions
 
-Quick setup
+---------------Quick setup-----------------
 
 1.Open the project in Android Studio and let Gradle sync
 
@@ -24,7 +24,7 @@ Quick setup
 
 4.Default keypass is fashion but your extension can be different
 
-How it works
+------------------------How it works-------------------
 
 1.ApiService
 
